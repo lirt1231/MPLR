@@ -1,0 +1,17 @@
+# VSCode directory
+.vscode
+
+# Python cache
+__pycache__
+.ipynb_checkpoints
+
+# Generated files and logs
+demo/*.txt
+demo/*.json
+demo/test.html
+*.out
+*.log
+fwbifur.csv
+
+saved/
+test/
