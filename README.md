@@ -1,6 +1,6 @@
 # MPLR: a novel model for multi-target learning of logical rules for knowledge graph reasoning
 
-This is the implementation of the model MPLR, proposed in the paper [MPLR: incorporating entity embedding into logic rule learning for knowledge graph reasoning](TODO).
+This is the implementation of the model MPLR, proposed in the paper [MPLR: incorporating entity embedding into logic rule learning for knowledge graph reasoning](https://arxiv.org/abs/2112.06189).
 
 Yuliang Wei, Haotian Li, Guodong Xin, Yao Wang, Bailing Wang
 
@@ -55,10 +55,15 @@ For more details, please check the jupyter notebooks mentioned above.
 
 ## Citation
 
-If you find this repository useful, please cite our [paper](TODO):
+If you find this repository useful, please cite our [paper](https://arxiv.org/abs/2112.06189):
 
 ```
-
+@article{wei2021mplr,
+  title={MPLR: a novel model for multi-target learning of logical rules for knowledge graph reasoning},
+  author={Wei, Yuliang and Li, Haotian and Xin, Guodong and Wang, Yao and Wang, Bailing},
+  journal={arXiv preprint arXiv:2112.06189},
+  year={2021}
+}
 ```
 
 
