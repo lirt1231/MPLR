@@ -49,7 +49,7 @@ The last argument `rel` allows the script to compute MRR and Hit@k for each rela
 
 You can run the notebook `model/train.ipynb` to train a MPLR model as well as generate logic rules on the certain dataset.
 
-The computation of saturations can be accessed in two notebooks, `datasets/graph_assessment.ipynb` and `datasets/graph_assessment-multihop.ipynb`, the former for saturations of rules with fixed length of two while the latter one allows varied lengths no longer than $L$.
+The computation of saturations can be accessed in two notebooks, `datasets/graph_assessment.ipynb` and `datasets/graph_assessment-multihop.ipynb`, the former for saturations of rules with fixed length of two while the latter one allows varied lengths no longer than L.
 
 For more details, please check the jupyter notebooks mentioned above.
 
