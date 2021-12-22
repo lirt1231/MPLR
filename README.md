@@ -45,11 +45,11 @@ python eval/evaluate.py --dataset=family --top_k=10 --rel
 
 The last argument `rel` allows the script to compute MRR and Hit@k for each relation and print information on the CLI.
 
-2. Mined rules and saturations
+2. Bifurcations, saturations and mined rules
 
 You can run the notebook `model/train.ipynb` to train a MPLR model as well as generate logic rules on the certain dataset.
 
-The computation of saturations can be accessed in two notebooks, `datasets/graph_assessment.ipynb` and `datasets/graph_assessment-multihop.ipynb`, the former for saturations of rules with fixed length of two while the latter one allows varied lengths no longer than L.
+The computation of bifurcations and saturations can be accessed in two notebooks, `datasets/graph_assessment.ipynb` and `datasets/graph_assessment-multihop.ipynb`, the former for saturations of rules with fixed length of two while the latter one allows varied lengths no longer than L.
 
 For more details, please check the jupyter notebooks mentioned above.
 
