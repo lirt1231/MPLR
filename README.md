@@ -37,7 +37,7 @@ When the training process finishes, there are extra files created by the script 
 
 1. MRR & Hit@k
 
-There is a separate script `eval/evaluate.py` to compute the MRR and Hit@k under the filtered protocol proposed in [TransE](https://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf), and you will see the evaluation result in your CLI after running this evaluation script.
+There is a separate script `eval/evaluate.py` for computing the MRR and Hit@k, and you will see the evaluation result in your CLI after running this evaluation script.
 
 ```shell
 python eval/evaluate.py --dataset=family --top_k=10 --rel

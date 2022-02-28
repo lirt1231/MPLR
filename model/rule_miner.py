@@ -92,6 +92,23 @@ class RuleMiner(nn.Module):
         """
         device = "cuda" if heads.is_cuda else "cpu"
 
+        # Prepare sparse adjacency matrices.
+        operators_matrices = {
+            rel: torch.sparse.FloatTensor(
+                torch.LongTensor(adjacency_matrices[rel][0]).t(),
+                torch.FloatTensor(adjacency_matrices[rel][1]),
+                adjacency_matrices[rel][2],
+            ).to(device)
+            for rel in adjacency_matrices.keys()
+        }
+        # Prepare multi-hot vectors.
+        # A list of `rank` tensors,
+        # each tensor: (batch_size, step, num_entities).
+        memory_list = [
+            F.one_hot(heads, self.num_entities).float().unsqueeze(1).to(device)
+            for _ in range(self.rank)
+        ]
+
         query_embed = queries.view(1, -1)
         # (num_steps, batch_size).
         query_embed = torch.cat(
@@ -104,42 +121,24 @@ class RuleMiner(nn.Module):
         # (num_steps, batch_size, query_embedding_dim).
         query_embed = self.query_embedding(query_embed)
 
-        # Do attention.
-        self.attention_operator_list = []
-        for rnn in self.rnns:
-            # `rnn_output`: (num_steps, batch_size, hidden_size*2).
-            rnn_output, (_, _) = rnn(query_embed)
-
-            # (num_steps, batch_size, num_operators+1).
-            trans_output = torch.matmul(rnn_output, self.W_0) + self.b_0
-            # (num_steps, num_operators+1, batch_size).
-            attn_output = F.softmax(trans_output, -1).transpose(-2, -1)
-
-            self.attention_operator_list.append(attn_output.unsqueeze(-1))
-
-        operators_matrices = {
-            rel: torch.sparse.FloatTensor(
-                torch.LongTensor(adjacency_matrices[rel][0]).t(),
-                torch.FloatTensor(adjacency_matrices[rel][1]),
-                adjacency_matrices[rel][2],
-            ).to(device)
-            for rel in adjacency_matrices.keys()
-        }
-
-        # A list of `rank` tensors,
-        # each tensor: (batch_size, step, num_entities).
-        memory_list = [
-            F.one_hot(heads, self.num_entities)
-             .float().unsqueeze(1).to(device)
-            for _ in range(self.rank)
-        ]
-
+        self.attention_operator_list = []  # for debug
         # (batch_size, num_entities).
         logits = 0.0
         for r in range(self.rank):
+            # Do attention.
+            # `rnn_output`: (num_steps, batch_size, hidden_size*2).
+            rnn_output, (_, _) = self.rnns[r](query_embed)
+
+            # (num_steps, batch_size, num_operators+1).
+            trans_output = torch.matmul(rnn_output, self.W_0) + self.b_0
+            # (num_steps, num_operators+1, batch_size, 1).
+            attn_operator = F.softmax(trans_output, -1).transpose(-2, -1).unsqueeze(-1)
+            self.attention_operator_list.append(attn_operator)
+
+            # Inference through matrix multiplication.
             if self.training:
                 # (num_operators+1, batch_size, 1).
-                first_hop_attns = self.attention_operator_list[r][0]
+                first_hop_attns = attn_operator[0]
                 # (batch_size, T, t, num_entities)
                 sub_memory_list = [
                     # (T, t, num_entities)
@@ -152,7 +151,7 @@ class RuleMiner(nn.Module):
                 # (batch_size, num_entities).
                 memory = memory_list[r][:, -1, :]
                 # (num_operators+1, batch_size, 1).
-                attn_ops = self.attention_operator_list[r][t]
+                attn_ops = attn_operator[t]
                 # (batch_size, num_entities).
                 added_matrix_result = 0.0
 
@@ -185,7 +184,7 @@ class RuleMiner(nn.Module):
                         # Transmit from head node.
                         T = tails[bid]
                         Tids = range(len(T))
-                        tmp_attn = self.attention_operator_list[r][t, queries[bid], bid, 0]
+                        tmp_attn = attn_operator[t, queries[bid], bid, 0]
                         added_sub_memory_result[bid][Tids, T] +=\
                             memory[bid, heads[bid]] * tmp_attn
 

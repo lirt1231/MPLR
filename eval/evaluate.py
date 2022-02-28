@@ -7,7 +7,7 @@ import numpy as np
 
 def evaluate():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default="family-multi", type=str)
+    parser.add_argument('--dataset', default="family", type=str)
     parser.add_argument('--top_k', default=1, type=int)
     parser.add_argument('--rel', default=False, action="store_true")
     option = parser.parse_args()
