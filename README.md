@@ -23,21 +23,21 @@ We provide a demo for training and evaluating our model on the `Family` dataset.
 
 ### Training
 
-Run the following command in you shell **under the root directory** of this repository to train a model.
+Run the following command in your shell **under the root directory** of this repository to train a model.
 
 ```shell
 python model/main.py --dataset=family
 ```
 
-You may check the configuration file `model/configure.py` for more possible hyperparameter combinations. There is also a jupyter notebook for training this model in an interactive way locating at `model/train.ipynb`.
+You may check the configuration file `model/configure.py` for more possible hyperparameter combinations. There is also a jupyter notebook for training this model in an interactive way located at `model/train.ipynb`.
 
-When the training process finishes, there are extra files created by the script that are stored under the directory `saved/family`, e.g., `option.txt` contains hyperparameters in this experiment and `prediction.txt` is the prediction results on test data for computing the metrics MRR (Mean Reciprocal Rank) and Hit@k.
+When the training process finishes, there are extra files created by the script that are stored under the directory `saved/family`, e.g., `option.txt` containing hyperparameters in this experiment and `prediction.txt` the prediction results on test data for computing the metrics MRR (Mean Reciprocal Rank) and Hit@k.
 
 ### Evaluation
 
 1. MRR & Hit@k
 
-There is a separate script `eval/evaluate.py` to compute the MRR and Hit@k under the filtered protocol proposed in [TransE](https://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf), and you will see the evaluation result in your CLI.
+There is a separate script `eval/evaluate.py` to compute the MRR and Hit@k under the filtered protocol proposed in [TransE](https://papers.nips.cc/paper/5071-translating-embeddings-for-modeling-multi-relational-data.pdf), and you will see the evaluation result in your CLI after running this evaluation script.
 
 ```shell
 python eval/evaluate.py --dataset=family --top_k=10 --rel

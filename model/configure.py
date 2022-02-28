@@ -17,7 +17,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 class Configure(object):
     def __init__(self) -> None:
         parser = argparse.ArgumentParser(description="Configuration")
-        parser.add_argument("--dataset", default="family-multi", type=str)
+        parser.add_argument("--dataset", default="family", type=str)
         parser.add_argument("--top_k", default=10, type=int)
         parser.add_argument("--rank", default=3, type=int)
         parser.add_argument("--num_steps", default=2, type=int)
@@ -51,9 +51,9 @@ class Configure(object):
         # Model prediction file.
         self.prediction_file = os.path.join(experiment_dir, "prediction.txt")
         if not os.path.exists(experiment_dir):
-            os.mkdir(experiment_dir)
-            os.mkdir(self.checkpoint_dir)
-            os.mkdir(self.model_save_dir)
+            os.makedirs(experiment_dir)
+            os.makedirs(self.checkpoint_dir)
+            os.makedirs(self.model_save_dir)
         """Hypterparameters"""
         self.HP_top_k = args.top_k
         self.HP_rank = args.rank
